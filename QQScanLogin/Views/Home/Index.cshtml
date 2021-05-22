@@ -3,6 +3,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Welcome, @User.Identity.Name</h1>
+    <p>You can <a href="@Url.Action("Logout","Account")">Click here</a> to logout your current account.</p>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

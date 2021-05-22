@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>QQ Scan Login</h1>
+
+<img src="@Url.Action("QrCode")" width="350" alt="二维码失效？点击刷新" onclick="javascript:this.src += '?_t='+ Math.random();" style="cursor: pointer;" />
+
+<h1>QQ Scan Result</h1>
+
+<textarea rows="3" cols="45" id="result"></textarea>
+
+<form asp-action="Login" method="post" id="loginForm">
+    <input type="hidden" name="nick" id="nickName" />
+    <input type="hidden" name="number" id="qqNumber" />
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        var timer;
+        $(function() {
+            function getScanResult() {
+                $.getJSON("@Url.Action("QrResult")", function(res) {
+                    console.log(res);
+                    if (res.success) {
+                        clearInterval(timer);
+                        $("#nickName").val(res.data.nick);
+                        $("#qqNumber").val(res.data.number);
+                        $("#loginForm").submit();
+                    }
+                    $("#result").val(JSON.stringify(res));
+                })
+                .success(function() {
+
+                })
+                .error(function() {
+                    clearInterval(timer);
+                })
+                .complete(function() {
+
+                });
+            }
+            timer = setInterval(getScanResult, 1000);
+        });
+    </script>
+}
